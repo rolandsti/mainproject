@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Location: {{location}}</h1>
+
+
+<ul>
+{% for each_item in some_list %}
+	<li>
+	{{ forloop.counter }} - {{ each_item }} - 
+	{% if each_item == 111 %} {{ "My IF works!" }} 
+	{% elif each_item == "Hello" %} {{ "This is else if" }}
+	{% else %}{{ "This is else" }}
+	</li>
+	{% endif %}
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+
