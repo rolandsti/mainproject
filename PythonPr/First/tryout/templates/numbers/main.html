@@ -1,10 +1,45 @@
 {% extends 'base.html' %}
 
+{% block header %}
+<style>
+/*html {
+	background-image: url("/static/background.jpg");}
+}
+*/
+</style>
+{% endblock %}
 
 {% block content %}
 
 
-Location: {{ title }}
+	<div class="main-form">
+		<div class="main-form-box">
+			
+				<form method="post"> {% csrf_token %}
+				{{ form.number }}
+				<input type="submit" name="main_butt" class="main-button" value="Search for it">
+				</form>
+	<form method="post"> {% csrf_token %}
+		</div>
+		<div class="main-form-history-box">
+			<input type="submit" name="hist_butt" class="main-history-button" value="History">
+		</div>
+	</div>
+	</form>
+	<div class="main-lower-form">
+	{% if visible == 'true' %}
+		Your number: {{ numbers.number }}
+		<br>
+		Your Fact: {{ numbers.fact }}
+	{% endif %}
+	</div>
+	<div class="history-box">
+	{% for item in final_data %}
+		<div class="history-entry">
+		 	{{ item.number }} - {{ item.fact }}
+		 </div>
+	{% endfor %}
+	</div>
 {% endblock %}
 
 

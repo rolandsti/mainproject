@@ -14,23 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from APIP import views as api
 from tryout import views as thing
-from tryout.views import numbers_main_view, numbers_create_view as nr
+from tryout.views import numbers_create_view as numb
 
 
 urlpatterns = [
 #    path('apip/', api.index, name='index'),
     path('string/', api.string, name='string'),
-
     path('admin/', admin.site.urls),
-
-    path('', thing.index_view, name='index'),
-    path('about/', thing.about_view, name='about'),
-    path('home/', thing.home_view, name='home'),
+    path('stuff', thing.index_view, name='index'),
+    path('1a/', thing.about_view, name='about'),
+    path('1b/', thing.home_view, name='home'),
     path('strings/', thing.string_view, name="view"),
-    path('nr/', nr, name="nr"),
-    path('numbers/', nr, name="numbers"),
+    path('', thing.numbers_main_view, name="main"),
+    path('numbers/', numb, name="numbers"),
 ]

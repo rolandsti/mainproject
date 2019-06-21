@@ -1,23 +1,34 @@
-<!doctype html>
-<!-- this page is for design and can be releated to others when callin from "{ exdends 'base.html' }"  -->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Coding is cool</title>
+	{% load static %}
+	<link href="{% static 'style.css' %}" rel="stylesheet">
+
+	{% block header %}
+	{% endblock %}
 
 </head>
-<body>
+	<body>
 
-{% include 'navbar.html'%}
+	<div class="top-bar">
+		<div class="top-bar-content">
+			{% include 'navbar.html'%}
+		</div>
+	</div>
+	<div class="content">
+		<div class="content-inside">
+		{% block content %}
 
-	
-{% block content %}
+			for other pages this part is where diiferent content sits
 
-for other pages this part is where diiferent content sits
+		{% endblock %}
+		</div>
+	</div>
 
-{% endblock %}
-
-
-
+	<script src="{% static 'script.js' %}"></script>
 </body>
 </html>

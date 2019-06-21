@@ -39,14 +39,14 @@ request.open('GET', 'https://ghibliapi.herokuapp.com/films', true)
 request.onload = function() {
 
   var data = JSON.parse(this.response)
-var howmany = document.getElementById('inputtext').value		
+var howmany = document.getElementById('inputtext').value    
   if (request.status >= 200 && request.status < 400) {
-	var count = 1
-	
+  var count = 1
+  
     data.forEach((movie, index) => {
-	console.log(index);
-	console.log(movie);
-	if (count <= howmany) {
+  console.log(index);
+  console.log(movie);
+  if (count <= howmany) {
       const card = document.createElement('div')
       card.setAttribute('class', 'card')
 
@@ -59,9 +59,9 @@ var howmany = document.getElementById('inputtext').value
 
       container.appendChild(card)
       card.appendChild(h1)
-	card.appendChild(p)
-	count = count + 1
-	}
+  card.appendChild(p)
+  count = count + 1
+  }
     })
   } else {
     const errorMessage = document.createElement('marquee')
@@ -72,9 +72,6 @@ var howmany = document.getElementById('inputtext').value
 
 request.send()
 }
-
-
-
 
 
 
