@@ -5,6 +5,8 @@ function myFunction1() {
 }
 
 
+
+
 function myFunction2() {
 var elem = document.getElementById("test");
 elem.hidden = true;
@@ -19,6 +21,33 @@ elem.innerHTML = "";
 var elem = document.getElementById("numbers");
 elem.innerHTML = ""; 
 }
+
+//////////////////////////////////////////////
+//////////////////////////////////////////////
+
+
+
+function myFunction3(the_id) {
+  var elem = document.getElementById("test");
+  var sss = the_id + "/delete/";
+  if (confirm("U Sure?")) {
+    $.ajax({
+      url: sss,
+      data: {'Something': 'Hey'},
+      dataType: 'json',
+      success: function (data) {
+        document.getElementById(the_id).parentNode.parentNode.style.display='none'; // hides deleted element
+      }
+    })
+  }
+
+
+  
+}
+
+
+//////////////////////////////////////////////
+//////////////////////////////////////////////
 
 function MovieAPI() {
 

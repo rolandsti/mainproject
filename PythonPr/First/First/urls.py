@@ -16,19 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from APIP import views as api
 from tryout import views as thing
 from tryout.views import numbers_create_view as numb
 
 
 urlpatterns = [
-#    path('apip/', api.index, name='index'),
-    path('string/', api.string, name='string'),
     path('admin/', admin.site.urls),
     path('stuff', thing.index_view, name='index'),
     path('1a/', thing.about_view, name='about'),
     path('1b/', thing.home_view, name='home'),
     path('strings/', thing.string_view, name="view"),
-    path('', thing.numbers_main_view, name="main"),
     path('numbers/', numb, name="numbers"),
+## down for main project stuff
+    path('', thing.numbers_main_view, name="main"),
+    path('<int:entry_id>/delete/', thing.numbers_delete_view, name="delete")
 ]

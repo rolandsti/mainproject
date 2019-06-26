@@ -1,57 +1,34 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-
-
-# Create your views here.
-def index_view(request, *args, **kwargs):
-	return render(request, 'stuff.html', {})
-
-
-
-def home_view(request, *args, **kwargs):
-	context = {
-		"location" : "Home",
-		"some_number" : 10
-	}
-	return render(request, "home.html", context)
-
-
-def about_view(request,*args, **kwargs):
-	context = {
-		"location" : "About",
-		"some_number" : 10,
-		"some_list": [111, 222, 333, "Hello"]
-	}
-	return render(request, 'about.html', context)
-
-def string_view(*args, **kwargs):
-	return HttpResponse("<h1>Hello</h1>") #html string
-
-##########################
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 
 import requests
 from .models import numbers #imports class NUMBERS from models.py
 from .forms import NumbersForm  #import form NUMBERSFORM from forms.py
+from .functions import MainPage
+from django.http import JsonResponse
+from .forms import numbers_form, testing_numbers
 
 
-def numbers_main_view(request):
-	# obj = numbers.objects.get(id=1) izsauc visus numuru ierakstus no DB
+def numbers_main_view(request): #history button and search
+
+	#obj = numbers.objects.get(id=1) #izsauc visus numuru ierakstus no DB
+	#MainPage(request)
 
 
 	where = 'http://numbersapi.com/'
 	url = where
 	number = ''
 	form = NumbersForm()
-	visible = 'false'
+	visible = False
 
-	if request.method == 'POST': # executed when Search button pressed
+	if request.method == 'POST': # checks if post activated
 
 		# if  request.POST.get('main-butt'):
 
 		if 'main_butt' in request.POST: #checks if name in method is the rightone
 
 			number = request.POST.get('number') #takes input with name NUMBER
-			visible = 'true'
+			visible = True
 						
 			url = where + str(number) #add two string together
 			form = NumbersForm() #cleansout form
@@ -76,8 +53,9 @@ def numbers_main_view(request):
 			final_data = []
 			allnumbers = numbers.objects.all()
 			for numb in allnumbers:
-
+				
 				all_numbers = {
+					'id': numb.id,
 					'number': numb.number,
 					'fact': numb.fact,
 				}
@@ -86,27 +64,54 @@ def numbers_main_view(request):
 
 			context = {
 			'form': form,
-			'final_data': final_data
+			'final_data': final_data,
 			}
 
 		else:
 			context = {
-				'form' : form
+				'form' : form,
+				'visible': visible,
 			}
 
 
 	else: #will be executed when button wasnt pressed
 		context = {
-			'form' : form
+			'form' : form,
+			'visible': visible,
 		}
+	
+
 
 	return render(request, "numbers/main.html", context)
 
 
+###########################
 ############################
 
 
-from .forms import numbers_form, testing_numbers
+
+def numbers_delete_view (request, entry_id):
+
+	
+
+
+	try:
+		obj = numbers.objects.get(pk=entry_id)
+		obj.delete()
+		form = NumbersForm()
+		print ('hello')
+		data = {'Somedata' : 'Success'}
+		
+	except:
+		data = "Impossible action"
+		print(data)
+		raise Http404("Impossible action")
+		
+	return JsonResponse(data)
+
+###########################
+###########################
+
 
 def numbers_create_view(request):
 	my_form = testing_numbers()
@@ -153,3 +158,32 @@ def numbers_create_view(request):
 		# }
 
 	return render(request, "numbers/main_create.html", context)
+
+	# Create your views here.
+def index_view(request, *args, **kwargs):
+
+	return render(request, 'stuff.html', {})
+
+
+
+def home_view(request, *args, **kwargs):
+	context = {
+		"location" : "Home",
+		"some_number" : 10
+	}
+	return render(request, "home.html", context)
+
+
+def about_view(request,*args, **kwargs):
+	context = {
+		"location" : "About",
+		"some_number" : 10,
+		"some_list": [111, 222, 333, "Hello"]
+	}
+	return render(request, 'about.html', context)
+
+
+def string_view(*args, **kwargs):
+	return HttpResponse("<h1>Hello</h1>") #html string
+
+##########################

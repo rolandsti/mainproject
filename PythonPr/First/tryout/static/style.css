@@ -14,7 +14,6 @@ html {
 body {
 	margin:auto;
 	width:85%;
-
 }
 
 .top-bar {
@@ -24,10 +23,13 @@ body {
 	width: 100%;
 	height: auto;
 	display: grid;
+	border-style: solid;
+	border-width: 2px 2px 0px 2px;
+	border-color: #CFCFCF;
 	grid-template-columns: 15% 22% 22% 22% 19%;
   	grid-template-rows: 10% 80% 10%;
-  	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+  	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 }
 
 .top-bar-content {
@@ -61,10 +63,14 @@ body {
 .content {
 	float:left;
 	width:100%;
-	background-color: #f7f8f3;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	background-color: #f2f4f6;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 	margin-bottom: 25px;
+	border-style: solid;
+	border-width: 0px 2px 2px 2px;
+	border-color: #CFCFCF;
+
 }
 
 .content-inside {
@@ -82,17 +88,8 @@ body {
   	grid-template-rows: 10% auto auto 10%;
 }
 
-.main-lower-form {
-	float:left;
-	/*background-color: #ffffff;*/
-	width:100%;
-	margin-top: 30px;
-	display: grid;
-	grid-template-columns: 30% auto 30%;
-  	grid-template-rows: 10% auto auto 10%;
-}
-
 .main-form-box {
+	display: grid;
 /*	background-color: #d6d6d6;*/
 	grid-column-start: 2;
 	grid-column-end: 3;
@@ -101,8 +98,30 @@ body {
 	width:100%;
 }
 
+.main-lower-form {
+	float:left;
+/*	background-color: #ffffff;*/
+	width:100%;
+	display: grid;
+	grid-template-columns: 1% auto 1%;
+  	grid-template-rows: 10px auto;
+  	margin-bottom: 15px;
+}
+
+.main-lower-form-box {
+	float: left;
+	/*background-color: #d6d6d6;*/
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 2;
+	grid-row-end: 3;
+	width:100%;
+	margin-top:15px;
+}
+
+
 .main-form-history-box {
-/*	background-color: #d6d6d6;*/
+	background-color: #d6d6d6;
 	grid-column-start: 2;
 	grid-column-end: 3;
 	grid-row-start: 3;
@@ -111,22 +130,95 @@ body {
 }
 
 
+.history-entry {
+	float: left;
+	width: 99.5%;
+	border-style: solid;
+	border-width: 1.5px;
+	border-color: #DADBDE;
+	border-radius: 3px;
+	background-color: #F5F6F8;
+	margin: 2px 0px 2px 0px;
+	font-family: Arial;
+	font-size: 17px;
+	font-size: 1.2vw;
+	min-height: 1.5vw;
+}
+
+
+.history-entry:hover {
+	background-color: #EAEBEF;
+	margin: 0px;
+	padding: 2px 0px 2px 0px;
+}
+
+.history-entry-left {
+	float:left;
+	width: 10%;
+	text-align:right;
+	font-weight:bold;
+	padding: 6px 0px 6px 0px;
+}
+
+
+.history-entry-middle {
+	float:left;
+	width: 74%;
+	padding: 6px 0px 6px 0px;
+}
+
+.history-entry-right {
+	float:left;
+	width: 8%;
+	text-align:right;
+	font-weight:bold;
+	padding: 6px 0px 6px 0px;
+}
+
+.link {
+	background-color: transparent;
+	border: none;
+	color: #042739;
+	font-style: ;
+	font-weight:800;
+	font-family: Arial;
+	font-size: 15px;
+	font-size: 1vw;
+	outline:none;
+	margin:auto 6% auto 0px;
+	padding:0px;
+	width:94%;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a {
+	text-decoration: none;
+}
+
+.link:hover {
+	color: #f35b6a;
+}
+
+
+
 .main-input {
 	float:left;
 	width: 60%;
 	height: 35px;
 	font-size: 22px;
 	float:left;
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
 }
 
 .main-button {
 	width: 35%;
 	height: 39px;
 	float: left;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+	border-top-right-radius: 6px;
+	border-bottom-right-radius: 6px;
 	border: 0;
  	background: none;
  	box-shadow: none;
@@ -135,6 +227,7 @@ body {
  	font-family: Arial black;
  	font-size: 22px;
     font-size: 1.3vw;
+    cursor: pointer;
 }
 
 
@@ -147,7 +240,7 @@ body {
 	width: 96%;
 	height: 39px;
 	float: left;
-	border-radius: 8px;
+	border-radius: 6px;
 	border: 0;
  	background: none;
  	box-shadow: none;
@@ -157,25 +250,18 @@ body {
  	font-size: 22px;
     font-size: 1.3vw;
     margin: auto;
-    margin-top:10px;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 
 .main-history-button:hover {
 	color: #f35b6a;
 	background-color: #063148;
+
 }
 
-.history-box {
-	width: 100%;
-	float: left;
-	margin-bottom: 10px;
-}
 
-.history-entry {
-	float: left;
-	width: 100%;
-}
 
 #numbers {
 width:100%
