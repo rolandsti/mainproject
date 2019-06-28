@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from tryout import views as thing
-from tryout.views import numbers_create_view as numb
+from tryout.views import stuff_create_view as numb
 
 
 urlpatterns = [
@@ -29,5 +29,8 @@ urlpatterns = [
     path('numbers/', numb, name="numbers"),
 ## down for main project stuff
     path('', thing.numbers_main_view, name="main"),
-    path('<int:entry_id>/delete/', thing.numbers_delete_view, name="delete")
+    path('create/', thing.numbers_create_view, name="create"),
+    path('<int:entry_id>/delete/', thing.numbers_delete_view, name="delete"),
+    path('<int:entry_id>/save/', thing.numbers_edit_view, name="save"),
+    path('<int:entry_id>/', thing.numbers_entry_view, name="entry"),
 ]
