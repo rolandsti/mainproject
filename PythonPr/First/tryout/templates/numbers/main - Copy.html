@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+/*html {
+	background-image: url("/static/background.jpg");}
+}
+*/
+</style>
+{% endblock %}
+
+{% block content %}
+	<p id="test"></p>
+
+	<div class="main-form">
+
+		<div class="main-form-box">
+			
+			<form action="/" method="post"> {% csrf_token %}
+
+				{{ form.number }}
+				<input type="submit" name="main_butt" class="main-button" value="Search for it">
+
+			</form>
+		
+			<form method="post"> {% csrf_token %}
+		
+				<div class="main-form-history-box">
+					<input type="submit" name="hist_butt" class="main-history-button" value="History">
+				</div>
+
+			</form>
+		</div>
+	</div>
+	
+	<div class="main-lower-form">
+			<div class="main-lower-form-box">
+								{% if visible == True %}
+									<div class="data-requested">
+										Your number: {{ numbers.number }}
+									</div>
+									<div class="data found">
+										Your Fact: {{ numbers.fact }}
+									</div>
+								{% endif %}
+
+			<!-- <div class="history-box"> -->
+								{% for item in final_data reversed %}
+									<div class="history-entry">
+									 	<div class="history-entry-left"><div style="margin-right: 6%;">{{ item.number }}</div></div>
+									 	<div class="history-entry-middle">{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
+
+									 	<div class="history-entry-right"><a href="{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto;" class="link">View</div></a></div>
+
+									 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="DeleteFromMain(this.id)">Delete</button></div>
+									 </div>
+								{% endfor %}
+			<!-- </div> -->
+		</div>
+	</div>
+{% endblock %}
+
+

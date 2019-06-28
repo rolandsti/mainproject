@@ -12,47 +12,75 @@
 {% block content %}
 	<p id="test"></p>
 
+
+
+		<div id="all-pop-box" class="pop">
+
+  		<!-- Modal content -->
+			  <div class="pop-content">
+			    <span class="close">&times;</span>
+			    <div class="pop-box">
+			    	<div class="pop-label">Add something</div>
+					{{ popform.number }}
+					{{ popform.fact }}
+					<button onClick="SaveFromPopUp()" name="hist_butt" class="pop-button">Submit</button>
+				</div>
+			  </div>
+
+		</div>
+
+
 	<div class="main-form">
 
 		<div class="main-form-box">
 			
-			<form action="/" method="post"> {% csrf_token %}
+			{% if somealert != "" %} 
+				<div class="main-alert">{{somealert}}</div>
+			{% endif %}
+	
 
+		<form action="/" method="post" autocomplete="off"> {% csrf_token %}
 				{{ form.number }}
-				<input type="submit" name="main_butt" class="main-button" value="Search for it">
 
-			</form>
-		
-			<form method="post"> {% csrf_token %}
-		
-				<div class="main-form-history-box">
-					<input type="submit" name="hist_butt" class="main-history-button" value="History">
-				</div>
+					<div class="main-form-history-box">
+						<div style="width:50%; float:left;"><input type="submit" name="main_butt" class="main-button-left" value="Search web"></div>
+		</form>		
+	
 
-			</form>
+						<div style="width:50%; float:left;"><div id="AddCustomEntry" class="main-button-right"><div style="margin: auto;">Add your Own</div></div></div>
+
+										<form method="post"> {% csrf_token %}
+						<input type="submit" name="hist_butt" id="hist_butt" class="main-history-button" value="History">
+										</form>
+					</div>
+		
+
 		</div>
 	</div>
 	
 	<div class="main-lower-form">
 			<div class="main-lower-form-box">
+
 								{% if visible == True %}
+								<div class="request-entry">
 									<div class="data-requested">
 										Your number: {{ numbers.number }}
 									</div>
-									<div class="data found">
+									<div class="data-found">
 										Your Fact: {{ numbers.fact }}
 									</div>
+								</div>
 								{% endif %}
 
 			<!-- <div class="history-box"> -->
-								{% for item in final_data %}
+								{% for item in final_data reversed %}
 									<div class="history-entry">
-									 	<div class="history-entry-left"><div style="margin-right: 6%;">{{ item.number }}</div></div>
-									 	<div class="history-entry-middle">{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
+									 	<div class="history-entry-left"><div class="inside-left">{{ item.number }}</div>
+									 	{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
 
 									 	<div class="history-entry-right"><a href="{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto;" class="link">View</div></a></div>
 
-									 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="myFunction3(this.id)">Delete</button></div>
+									 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="DeleteFromMain(this.id)">Delete</button></div>
 									 </div>
 								{% endfor %}
 			<!-- </div> -->
