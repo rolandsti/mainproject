@@ -2,7 +2,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 
 import requests
-from .models import numbers #imports class NUMBERS from models.py
+from .models import numbers, content #imports class NUMBERS from models.py
 from .forms import NumbersForm, NumbersEntry, WholeNumbersForm  #import form NUMBERSFORM from forms.py
 from .functions import MainPage
 from django.http import JsonResponse
@@ -115,10 +115,11 @@ def numbers_entry_view(request, entry_id):
 		
 		final_data = []
 		allnumbers = numbers.objects.all()
+		final_data_count = 0
 
 		for numb in allnumbers:
 			if numb.number == obj.number and numb.id != obj.id:
-				
+				final_data_count += 1
 				related_data = {
 						'id': numb.id,
 						'number': numb.number,
@@ -128,6 +129,7 @@ def numbers_entry_view(request, entry_id):
 				final_data.append(related_data)
 
 		context = {
+			'final_data_count' : final_data_count,
 			'final_data': final_data,
 			'form': form,
 			'number' : obj.number,
@@ -224,7 +226,7 @@ def numbers_create_view(request):
 			}			
 			numbers.objects.create(**new_entry)
 			data = {
-				'info' : 'Changes have been made',
+				'info' : 'Your fact was saved',
 				'success' : 'true',
 			}
 			

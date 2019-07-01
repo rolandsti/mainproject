@@ -30,17 +30,22 @@
 
 		<div class="entry-form-third-box">
 			<div class="releated-title">Releated entries</div>
+				{% if final_data_count == 0 %}
+					<div class="history-entry">
+						<div class="entry-entry-center">...there are no releated records</div>
+					</div>
+				{% else %}	
+					{% for item in final_data reversed %}
+						<div class="history-entry">
+						 	<div class="history-entry-left"><div class="inside-left" >{{ item.number }}</div>
+						 	{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
 
-								{% for item in final_data reversed %}
-									<div class="history-entry">
-									 	<div class="history-entry-left"><div class="inside-left">{{ item.number }}</div>
-									 	{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
+						 	<div class="history-entry-right"><a href="http://{{request.get_host}}/{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto;" class="link">View</div></a></div>
 
-									 	<div class="history-entry-right"><a href="{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto;" class="link">View</div></a></div>
-
-									 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="DeleteFromMain(this.id)">Delete</button></div>
-									 </div>
-								{% endfor %}
+						 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="DeleteFromMain(this.id)">Delete</button></div>
+						 </div>
+					{% endfor %}
+				{% endif %}
 		</div>
 	</div>
 	

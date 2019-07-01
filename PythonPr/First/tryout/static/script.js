@@ -27,7 +27,6 @@ window.onclick = function(event) {
 
 
 
-
 function FocusInput() {
 
        document.getElementById("le_input").focus(); //focus uz inputbox atverot index lapu
