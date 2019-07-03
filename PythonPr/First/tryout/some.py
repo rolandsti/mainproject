@@ -47,7 +47,7 @@ try:
 			intern_data.append(five_min)
 
 	meeting_data = {
-		'MeetingStatus' : 'Meeting did not happen!',
+		'MeetingStatus' : 'Meeting did happen!',
 		'InternData' : intern_data,
 	}
 
