@@ -1,38 +1,90 @@
 // POP-UP Start //
-
-
 var modal = document.getElementById("all-pop-box");
 var btn = document.getElementById("AddCustomEntry");
 var span = document.getElementsByClassName("close")[0];
 
-btn.onclick = function() {
+if (window.location.pathname == "/") {
+btn.onclick = function() {  
   var fval = document.getElementById("le_input");
   var pval = document.getElementById("pop-number").value = fval.value;
   var pval = document.getElementById("pop-fact").value = "";
   modal.style.display = "block";
-  
+  }
+
+  span.onclick = invis();
 }
 
-span.onclick = function() {
-  modal.style.display = "none";
-}
 
 window.onclick = function(event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    span.onclick = invis();
   }
 }
-
+function invis() {
+  modal.style.display = "none";
+}
 // POP-OP End //
+
+
+//On Enter Click Button
+
+var input = document.getElementById("search_input");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    searchFromNavBar();
+  }
+});
+
+
+if (window.location.pathname == "/search/") {
+  var input = document.getElementById("search_field");
+  input.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      document.getElementById("search_in_search").click();
+    }
+  });
+}
 
 
 
 function FocusInput() {
-
-       document.getElementById("le_input").focus(); //focus uz inputbox atverot index lapu
+  if (window.location.pathname == "/") {
+       document.getElementById("le_input").focus();
+      } //focus uz inputbox atverot index lapu
   }
 
 
+function searchFromNavBar() {
+
+  var searchKey = document.getElementById("search_input").value;
+  searchKeywords(searchKey);
+}
+function searchFromSearch() {
+
+  var searchKey = document.getElementById("search_field").value;
+  searchKeywords(searchKey);
+  }
+
+function searchKeywords(searchKey) {
+
+  if (searchKey === "") {
+
+    alert("Cant search an empty field!");
+  } else {
+    var host = location.hostname;
+    var port = location.port;
+    var searchUri = "/search/";
+    if (port != "") {
+      var searchLink = "http://" + host + ":" + port + searchUri + "?keywords=" + searchKey;
+    } else {
+      var searchLink = "http://" + host + searchUri + "?keywords=" + searchKey;
+    }
+    
+    window.open(searchLink, "_self");
+  }
+}
 
 function DeleteFromMain(the_id) {
 
@@ -57,9 +109,8 @@ function DeleteFromMain(the_id) {
 
 function DeleteFromEntry(the_id) {
 
-  var home = "http://" + location.host;
+  
   var del = "delete/";
-
   if (confirm("R U sure?")) {
     $.ajax({
       type: 'GET',
@@ -77,11 +128,9 @@ function DeleteFromEntry(the_id) {
 
 function SaveFromEntry(the_id) {
 
-  var home = "http://" + location.host;
+  
   var save = "save/";
-  var form = document.getElementById('entry-fact-input').value;
- 
-
+  var form = document.getElementById('entry-fact-input').value; 
   if (confirm("R U sure?")) {
     $.ajax({
       type: 'GET',
@@ -89,7 +138,7 @@ function SaveFromEntry(the_id) {
       data: {'form': form,},
       dataType: 'json',
       success: function (data) {
-
+  
         window.alert(data.info);
 
       },
@@ -151,6 +200,19 @@ elem.innerHTML = "";
 }
 
 
+// for apitask entry page. Adds links to pictures
+
+var linkBox = document.getElementById("link_box");
+var imgBox = document.getElementById("img_box");
+for (var obj = 0; obj < 10; obj++ ) {
+var obj_id = "link-" + obj;
+var ahref = document.getElementById(obj_id).innerText;
+var wrap_obj = "#img-" + obj;
+var wrap_class = "<a href='" + ahref + "' target='blank' class='img-link'></a>";
+console.log(wrap_class);
+$(wrap_obj).wrapAll(wrap_class);
+
+}
 
 
 
@@ -230,8 +292,6 @@ cube.setAttribute ('class', 'cube')
 nrapp.appendChild(cube)
 
 }
-
-
 
 }
 

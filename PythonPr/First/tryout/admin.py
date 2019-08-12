@@ -6,3 +6,6 @@ admin.site.register (content)
 
 from .models import numbers
 admin.site.register (numbers)
+
+from .models import cities
+admin.site.register (cities)

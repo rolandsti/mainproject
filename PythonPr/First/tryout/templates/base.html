@@ -7,6 +7,8 @@
 	<title>Coding is cool</title>
 	{% load static %}
 	<link href="{% static 'style.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
 	{% block header %}
 	{% endblock %}
@@ -15,12 +17,43 @@
 	<body onload="FocusInput()">
 
 	<div class="top-bar">
+
+		<div class="top-bar-search-box dropdown" id="search_box">
+			<div class="top-bar-side-buttons" data-toggle="dropdown"><i class="fa fa-search"></i><span class="caret"></span></div>
+			  <ul class="dropdown-menu">
+			    <li>
+
+			    	<div class="col-lg-6">
+			    		
+						    <div class="input-group" style="font-size: 1.2vw !important;">
+						      <input type="text" class="form-control top-bar-search-input" id="search_input" placeholder="Keyword? [cat, mouse, mulesoft, **args]">
+						      <span class="input-group-btn">
+						        <button id="search_button" class="btn btn-default top-bar-search-go" onclick="searchFromNavBar()" type="button">Go!</button>
+						      </span>
+						    </div><!-- /input-group -->
+						
+					  </div><!-- /.col-lg-->
+
+			    </li>
+			  </ul>
+		</div>
+
 		<div class="top-bar-content">
 			{% include 'navbar.html'%}
 		</div>
+
+		<div class="top-bar-settings-box">
+			<a href="/settings"><div class="top-bar-side-buttons"><i class="fa fa-gear"></i></div></a>
+		</div>
 	</div>
-	<div class="content">
+	<div class="content-default" id="content">
+
+
+
+
+
 		<div class="content-inside">
+
 		{% block content %}
 
 			for other pages this part is where diiferent content sits
@@ -29,6 +62,9 @@
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-	<script src="{% static 'script.js' %}"></script>
+	<script type="text/javascript" src="{% static 'script.js' %}"></script>
+	<script src="{% static 'cookieJar.js' %}"></script>	
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </body>
 </html>

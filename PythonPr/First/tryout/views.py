@@ -1,246 +1,224 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
-
-import requests
-from .models import numbers, content #imports class NUMBERS from models.py
-from .forms import NumbersForm, NumbersEntry, WholeNumbersForm  #import form NUMBERSFORM from forms.py
-from .functions import MainPage
+from .models import numbers, content, cities #imports class NUMBERS from models.py
+from .forms import *  #import form NUMBERSFORM from forms.py
+from .functions import *
+from .test_functions import *
 from django.http import JsonResponse
 from .forms import numbers_form, testing_numbers
+from django.core import serializers
+import json
+import os
+import os.path
+import requests
+	
+
+def numbers_main_view(request): ### history button and search
+
+	context = main_page_function(request);
+	return render(request, "numbers/main.html", context)
 
 
 
-def numbers_main_view(request): #history button and search
+def numbers_entry_view(request, entry_id): ### opens individual entries
 
-	#obj = numbers.objects.get(id=1) #izsauc visus numuru ierakstus no DB
-	#MainPage(request)
-
-
-	where = 'http://numbersapi.com/'
-	url = where
-	number = ''
-	form = NumbersForm()
-	popform = WholeNumbersForm()
-	visible = False
 	try:
-		if request.method == 'POST': # checks if post activated
+		context = entry_page_function(request, entry_id)
+		return render(request, "numbers/main_entry.html", context)
 
-			# if  request.POST.get('main-butt'):
+	except:
+		raise Http404("Impossible action")
 
-			if 'main_butt' in request.POST: #checks if name in method is the rightone
+	
 
-				number = request.POST.get('number') #takes input with name NUMBER
-				visible = True
-							
-				url = where + str(number) #add two string together
-				form = NumbersForm() #cleansout form
+def numbers_delete_view (request, entry_id): ### deletes entries when called upon
 
-				data = requests.get(url) #gets data from url
+	try:
+		delete_entry_function(request, entry_id)
+		data = {'info' : 'Entry has been deleted!'}
+		return JsonResponse(data)
 
-				nr_fact = { #data to add db and html page
-					'number': number,
-					'fact': data.text,
+	except:
+		raise Http404("Impossible action")
+
+
+
+def numbers_edit_view (request, entry_id): ### edits entries in individual entry page
+
+	try:
+		data = edit_entry_function(request, entry_id)
+		print(entry_id)
+		return JsonResponse(data)
+
+	except:
+
+		raise Http404("Impossible action")
+
+def numbers_create_view(request):  ### creates new entrie in main page
+
+	try:
+		data = create_entry_function(request)		
+		return JsonResponse(data)
+
+	except:
+
+		raise Http404("Impossible action")
+	
+
+
+def settings_view(request): ### opens up settings page
+
+	return render(request, 'settings/settings.html')
+
+
+def search_keyword_view(request):
+	
+	try:
+		form = KeySearchForm()
+		result = search_keyword_function(request)
+
+		data = {
+		"found_result_count": 	result["found_result_count"],
+		"final_data": 			result["final_data"],
+		"form":					form,
+		}
+		
+
+	except:
+		form = KeySearchForm()
+		data = {
+			"form": form,
+			"somealert": "Something went horribly wrong... try different keyword:(",
+		}
+	return render(request, 'searching.html', data)
+
+
+
+
+
+
+def  api_search_keyword_view(request):
+	try:
+		result = search_keyword_function(request)
+		
+
+	except:
+		result = {
+		"found_result_count": 	result["found_result_count"],
+		}
+	return JsonResponse(result)
+
+
+
+
+
+def apimerge_view(request, *args, **kwargs):
+
+	if request.method == "GET":
+
+		city_to_find = request.GET.get('location')
+
+		if city_to_find and len(city_to_find) <= 100:
+
+			result = list_of_cities_function(request)
+
+			if result['result_count'] < 7000:
+				data = {
+					"result_count"	: result["result_count"],
+					"final_data"	: result["final_data"],
+					"input"			: city_to_find,
+					}
+			else:
+				data = {
+					"result_count"	: result["result_count"],
+					"final_data"	: result["final_data"],
+					"somealert"		: "There are 7000+ resuts... please be more specific",
+					"input"			: city_to_find,
 					}
 
-				numbers.objects.create(**nr_fact) #creating new record - '**' required if more than one value in {}
+			return render(request, 'apimerge/apimerge.html', data)
 
-				context = { #context to add for html page
-					'numbers'	: nr_fact,
-					'form' 		: form,
-					'visible'	: visible,
-					'popform'	: popform,
-				}
+		else:
+			if city_to_find and len(city_to_find) > 300:
+				data = {"somealert" : "Invalid request"}
+				return render(request, 'apimerge/apimerge.html', data)
+			else:
+				return render(request, 'apimerge/apimerge.html')
 
-			elif 'hist_butt' in request.POST:
+			
 
-				final_data = []
-				allnumbers = numbers.objects.all()
-				for numb in allnumbers:
-					
-					all_numbers = {
-						'id': numb.id,
-						'number': numb.number,
-						'fact': numb.fact,
-					}
-					
-					final_data.append(all_numbers)
 
-				context = {
-				'form': form,
-				'final_data': final_data,
-				'popform': popform,
-				}
+
+
+
+
+
+
+def apimerge_entry_view(request, keystring):
+	try:
+		if request.method == 'GET':
+			city_id = keystring
+
+			if len(city_id) < 10:
+				query_params = "?id=" + city_id
+				link = "http://127.0.0.1:7071/getsomedata" + query_params
+
+				data = requests.get(link).json()			
+				return render(request, "apimerge/apimerge_entry.html", data)
 
 			else:
-				context = {
-					'form' : form,
-					'visible': visible,
-					'popform': popform,
+				data = {
+					"somealert": "Invalid request",
+				}
+				return render(request, "apimerge/apimerge.html", data)
+		
+	except:
+		data = {
+					"somealert": "Invalid request",
 				}
 
 
-		else: #will be executed when button wasnt pressed
-			context = {
-				'form' : form,
-				'visible': visible,
-				'popform': popform,
-			}
-		
+		return render(request, "apimerge/apimerge.html", data)
 
 
-		return render(request, "numbers/main.html", context)
-
-	except:
-		visible = False
-		form = NumbersForm()
-		context = {
-				'form' : form,
-				'visible' : visible,
-				'somealert': 'Something went horribly wrong... Maybe too big of a number:)',
-				'popform': popform,
-			}
-
-		return render(request, "numbers/main.html", context)
-
-###########################
-###########################
-
-
-def numbers_entry_view(request, entry_id):
+def list_of_cities_view(request):
 
 	try:
-
-		obj = numbers.objects.get(id=entry_id)
-		form = NumbersEntry(initial= {'fact': obj.fact,})
-		
-		final_data = []
-		allnumbers = numbers.objects.all()
-		final_data_count = 0
-
-		for numb in allnumbers:
-			if numb.number == obj.number and numb.id != obj.id:
-				final_data_count += 1
-				related_data = {
-						'id': numb.id,
-						'number': numb.number,
-						'fact': numb.fact,
-				}
-
-				final_data.append(related_data)
-
-		context = {
-			'final_data_count' : final_data_count,
-			'final_data': final_data,
-			'form': form,
-			'number' : obj.number,
-			'id': obj.id,
-		}
-
-		return render(request, "numbers/main_entry.html", context)
+		data = list_of_cities_function(request)
 	except:
-
-		raise Http404("Impossible action")
-
-	
-
-
-###########################
-###########################
-
-
-def numbers_delete_view (request, entry_id):
-
-	try:
-
-		page = request.GET.get('location')
-		obj = numbers.objects.get(pk=entry_id)
-		obj.delete()
-		data = {'info' : 'Entry has been deleted!'}
-
-		return JsonResponse(data)
-
-	except:
-
-		raise Http404("Impossible action")
+		found_result_count = 0
+		data = {"result_count": found_result_count,}
+	return JsonResponse(data, safe=False)
 
 
 
-def numbers_edit_view (request, entry_id):
+##### JSON file conversion to SQLlite ###
+	# base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+	# file_path = os.path.join(base_path, "tryout/templates/apimerge/smol_list.json")
+	# print(file_path)
+	# json_data = open(file_path, encoding="utf8")
+	# data_load = json.load(json_data)
+	# 
+	# for city in data_load:
+	# 	entry = {
+	# 		"name": city['name'],
+	# 		"country": city['country'],
+	# 		"city_id": city['id']
+	# 	}
+	# cities.objects.create(**entry)
 
-	try:
-		form = request.GET.get('form')
-		if form == "":
-		
-			data = {'info' : 'Cannot save a blank field!'}
+	# data = json.dumps(data_load)
+	# json_data.close
+	# return JsonResponse(data, safe=False)
+##########################################
 
-		# elif form.is_integer() == true:
-		# 	data = {'info' : 'Cant save just number!'}
+##########################################
 
-		else:
+#### DOWN FROM HERE IS NOTHING WORTHY ####
 
-			obj = numbers.objects.get(pk=entry_id)
-			obj.fact = form
-			obj.save()
-			data = {'info' : 'Done!'}
-			
-		return JsonResponse(data)
-
-	except:
-
-		raise Http404("Impossible action")
-	
-
-###########################
-###########################
+##########################################
 
 
-def numbers_create_view(request):
-
-	try:
-
-		
-		number = request.GET.get('number')
-		fact = request.GET.get('fact')
-		print(number)
-		print(fact)
-		if fact == "" or number == "":
-
-			
-			data = {
-				'info' : 'Can NOT save a blank field!',
-				'success' : 'false',
-			}
-
-		# elif isinstance(serialize(input), int):
-
-		# 	data = {
-		# 		'info' : 'Invalid description!',
-		# 		'success' : 'false',
-		# 	}
-
-		else:
-			success = True
-			new_entry = {
-				'number' : number,
-				'fact'	: fact,
-			}			
-			numbers.objects.create(**new_entry)
-			data = {
-				'info' : 'Your fact was saved',
-				'success' : 'true',
-			}
-			
-			
-
-
-		return JsonResponse(data)
-
-	except:
-
-		raise Http404("Impossible action")
-	
-
-  
 
 def stuff_create_view(request):
 	my_form = testing_numbers()
@@ -288,10 +266,6 @@ def stuff_create_view(request):
 
 	return render(request, "numbers/main_create.html", context)
 
-	# Create your views here.
-def index_view(request, *args, **kwargs):
-
-	return render(request, 'stuff.html', {})
 
 
 

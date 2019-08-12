@@ -10,3 +10,10 @@ class content(models.Model):
 class numbers(models.Model):
 	number		= models.IntegerField(blank=False)
 	fact		= models.TextField(blank=False)
+
+
+class cities(models.Model):
+	name		= models.TextField(blank=False)
+	country		= models.TextField(blank=False)
+	city_id		= models.TextField(blank=False)
+

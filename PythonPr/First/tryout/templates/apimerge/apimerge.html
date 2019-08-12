@@ -1,0 +1,56 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+
+	<div class="main-form">
+		<div class="main-form-box">
+			
+			{% if somealert != "" %} 
+				<div class="main-alert" style="min-height:1.2vw;">{{somealert}}</div>
+			{% endif %}
+	
+
+			
+				
+
+					<div class="main-form-history-box">
+						<input type="text" value="{{input}}" class="main-input" id="apitask_field" placeholder="type city name" oninput="cityLookupInput(value)">
+						<input type="submit" name="hist_butt" id="cityLookup" class="main-history-button" value="Search" onclick="cityLookupButton()">
+
+					</div>
+		
+		</div>
+	</div>
+
+	<div class="apitask-lower-form">
+		<div class="main-lower-form-box" id="render_content">
+
+			
+<!-- its empty by default. content below render when valid search is made -->
+					{% if result_count > 0 %}
+							<div class="apitask-entry-search" id="searching" style="display: block;">
+								<div class="history-entry-left" id="searching_text" style="text-align: center; width: 100%;">There are {{result_count}} matching results.
+								</div>
+							</div>
+								{% for item in final_data%}
+									
+									<div class="history-entry" id="{{item.city_id}}" onclick="toContinue(id)" style="display: block;">
+										<div class="entry-apitask" style="text-align: center; width: 100%; cursor: pointer;">{{item.city_name}} -{{item.country}}-</div>
+									
+
+									 </div>
+								{% endfor %}
+				{% elif result_count == 0 %} 
+					<div class="apitask-entry-search" id="searching" style="display: block;">
+								<div class="history-entry-left" id="searching_text" style="text-align: center; width: 100%;">There are {{result_count}} matching results.</div>
+							</div>
+				{% endif %}		
+
+		</div>
+	</div>
+<script src="{% static 'apiMergeTask.js' %}"></script>
+{% endblock %}

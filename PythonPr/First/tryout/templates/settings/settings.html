@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+/*html {
+	background-image: url("/static/background.jpg");}
+}
+*/
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+
+		<div id="all-pop-box" class="pop">
+
+  		<!-- Modal content -->
+			  <div class="pop-content">
+			    <span class="close">&times;</span>
+			    <div class="pop-box">
+			    	<div class="pop-label">Add something</div>
+					{{ popform.number }}
+					{{ popform.fact }}
+					<button onClick="SaveFromPopUp()" name="hist_butt" class="pop-button">Submit</button>
+				</div>
+			  </div>
+
+		</div>
+
+
+	<div class="parent-settings-box">
+
+		<div class="child-settings-box">
+			
+			{% if somealert != "" %} 
+				<div class="main-alert">{{somealert}}</div>
+			{% endif %}
+
+				<div class="settings-content">
+				
+					<div style="width: 30%;float: left;"><div class="settings-style-select-label" name >Choose style:&nbsp;</div></div>
+					<div style="width: 35%;float: left;">
+						<select id="style_select" class="settings-style-select settings" onchange="switchStyle();"></select>
+					</div>
+					<div style="width: 35%;float: left;">
+						<input class="settings-invis-input" id="color_input" type="color" value="#ff0000" onchange="customColor(color_input.value);"></input>
+					</div>
+<!-- NUMBERS CHOISE -->
+					<div style="width:100%; float: left;">
+						<div class="settings-blank-box"></div>
+						<div class="settings-first-box">Numbers:&nbsp;</div>
+						<div class="settings-second-box">
+							<label class="switch">
+								<input type="checkbox" id="numbers" onchange="navButtonInvis(id);">
+								<span class="slider"></span>
+							</label>
+						</div>
+					</div>
+<!-- STUFF CHOISE -->
+					<div style="width:100%; float: left;">
+						<div class="settings-blank-box"></div>
+						<div class="settings-first-box">Stuff:&nbsp;</div>
+						<div class="settings-second-box">
+							<label class="switch">
+								<input type="checkbox" id="stuff" onchange="navButtonInvis(id);">
+								<span class="slider"></span>
+							</label>
+						</div>
+					</div>
+<!-- CUBES CHOISE -->
+					<div style="width:100%; float: left;">
+						<div class="settings-blank-box"></div>
+						<div class="settings-first-box" >API:&nbsp;</div>
+						<div class="settings-second-box">
+							<label class="switch">
+								<input type="checkbox" id="api" onchange="navButtonInvis(id);">
+								<span class="slider"></span>
+							</label>
+						</div>
+					</div>
+
+					<div class="settings-blank-box">
+						<div style="float:left;width:20%; margin-left:40%"></div>
+					</div>
+
+					<div style="width: 100%;float: left;"><input type="submit" class="save-changes-button settings" name="saveStyleCookie" value="Save Changes" onclick="saveStyleCookie()"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="main-lower-form" style="height: 3vw;">
+			
+	</div>
+{% endblock %}
+
+

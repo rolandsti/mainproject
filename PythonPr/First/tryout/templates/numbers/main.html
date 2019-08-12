@@ -78,9 +78,8 @@
 									 	<div class="history-entry-left"><div class="inside-left">{{ item.number }}</div>
 									 	{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
 
-									 	<div class="history-entry-right"><a href="{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto;" class="link">View</div></a></div>
-
-									 	<div class="history-entry-right"><button id="{{ item.id }}" class="link" onClick="DeleteFromMain(this.id)">Delete</button></div>
+									 	<div class="history-entry-right"><a href="{{ item.id }}"><div style="margin-top:auto; margin-bottom:auto; " class="link-stuff">View</div></a></div>
+									 	<div class="history-entry-right" ><a id="{{ item.id }}" onClick="DeleteFromMain(this.id)"><div class="link-stuff">Delete</div></a></div>
 									 </div>
 								{% endfor %}
 			<!-- </div> -->

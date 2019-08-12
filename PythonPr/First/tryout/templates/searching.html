@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<style>
+/*html {
+	background-image: url("/static/background.jpg");}
+}
+*/
+</style>
+{% endblock %}
+
+{% block content %}
+	<p id="test"></p>
+
+
+
+		<div id="all-pop-box" class="pop">
+
+  		<!-- Modal content -->
+			  <div class="pop-content">
+			    <span class="close">&times;</span>
+			    <div class="pop-box">
+			    	<div class="pop-label">Add something</div>
+					{{ popform.number }}
+					{{ popform.fact }}
+					<button onClick="SaveFromPopUp()" name="hist_butt" class="pop-button">Submit</button>
+				</div>
+			  </div>
+
+		</div>
+
+
+	<div class="main-form">
+
+		<div class="main-form-box">
+			
+			{% if somealert != "" %} 
+				<div class="main-alert">{{somealert}}</div>
+			{% endif %}
+	
+
+			
+				{{ form.keywords }}
+
+					<div class="main-form-history-box">
+					
+			
+	
+									
+						<input type="submit" name="hist_butt" id="search_in_search" class="main-history-button" value="Search" onclick="searchFromSearch()">
+										
+					</div>
+		
+		</div>
+	</div>
+	
+	<div class="main-lower-form">
+			<div class="main-lower-form-box">
+
+								
+
+			<!-- <div class="history-box"> -->
+				{% if found_result_count > 0 %}
+								{% for item in final_data reversed %}
+									<div class="history-entry">
+
+									 	<div class="history-entry-left"><div class="inside-left">{{ item.number }}</div>
+									 	{{ item.fact|slice:"100" }}{% if item.fact|length >= 100 %}...{% endif %}</div>
+
+									 	<div class="history-entry-right" ><a href="http://{{ request.get_host }}/{{ item.id }}"><div class="link-stuff">View</div></a></div>
+									 	<div class="history-entry-right" ><a id="{{ item.id }}" onClick="DeleteFromMain(this.id)"><div class="link-stuff">Delete</div></a></div>
+
+
+									 </div>
+								{% endfor %}
+				{% else %} 
+
+									<div class="history-entry">
+									 	<div class="history-entry-left" style="text-align: center !important; width:100% !important;">
+									 	Sorry, nothing was found.</div>
+
+									 </div>
+
+				{% endif %}
+			<!-- </div> -->
+		</div>
+	</div>
+{% endblock %}
+
+

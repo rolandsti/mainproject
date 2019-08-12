@@ -66,3 +66,10 @@ class WholeNumbersForm(forms.Form):
 																	)
 
 																)
+class KeySearchForm(forms.Form):
+		keywords = forms.CharField(label='The Title', widget=forms.TextInput(attrs={
+																		"placeholder": "what do you want to find?",
+																		"id"	: "search_field",
+																		"class"	: "main-input",
+																		"autocomplete" : "off",
+																		}))

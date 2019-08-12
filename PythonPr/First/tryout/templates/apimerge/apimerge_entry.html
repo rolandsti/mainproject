@@ -1,0 +1,125 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+	{% if somealert != "" %} 
+				<div class="main-alert" style="min-height:1.2vw;">{{somealert}}</div>
+			{% endif %}
+
+			<br>
+
+	<div class="apitask-entry-form">
+		<div class="apitask-entry-form-title">
+			{{ weather.city_name}} ({{ country.country_name}})
+		</div>
+		<div class="apitask-entry-form-box">
+	
+			<div class="apitask-entry-form-box-info">
+				<div style="width: 100%;">Weather Info</div>
+			</div>
+			<div class="apitask-entry-form-box-data">
+
+					
+				<div class="apitask-entry-form-box-one">
+					Temperature: {{ weather.temperature}} &#176;C<br>
+					Humidity: {{ weather.humidity}} %<br>
+					Wind Speed: {{weather.wind_speed}} m/s<br>
+					Clouds: {{weather.clouds}} %<br>
+				</div>
+
+				<div class="apitask-entry-form-box-two">
+					<div style="margin: auto; width:50%; background-color: #042739;color: #f7f8f3;text-align: center; border-radius: 6px; padding: 0.2vw 0px 0.5vw 0px">
+							<img style="width: 30%" src="http://openweathermap.org/img/wn/{{weather.icon}}.png">
+							<br>{{weather.description}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<div class="apitask-entry-form">
+		<div class="apitask-entry-form-box">
+	
+			<div class="apitask-entry-form-box-info">
+				<div style="width: 100%;">Country information</div>
+			</div>
+			<div class="apitask-entry-form-box-data">
+
+					
+				<div class="apitask-entry-form-box-one">		
+					Capital: {{country.capital }}<br>
+					Region: {{country.region}}<br>
+					Subregion: {{country.subregion}}<br>
+					Country code: {{ country.country_code }}<br>
+					Call code: +{{country.call_code }}<br>
+					Currency: {% for money in country.currencies %}{{money}}&nbsp;{% endfor %}<br>
+					Covered timezones: {% for zone in country.timezones %}{{zone}}&nbsp;{% endfor %}<br>				
+				</div>
+
+				<div class="apitask-entry-form-box-two">
+
+
+							<div style="margin:auto;color: #f7f8f3; text-align:center; padding: 0.2vw 0px 0.5vw 0px">
+							<img style="width:30%;" src="https://www.countryflags.io/{{weather.country}}/shiny/64.png">
+							
+					</div>
+
+						
+				</div>
+			</div>	
+		</div>
+	</div>
+
+		<div class="apitask-entry-form">
+		<div class="apitask-entry-form-box">
+	
+			<div class="apitask-entry-form-box-info">
+				<div style="width: 100%;">Images</div>
+			</div>
+			<div class="apitask-entry-form-box-data">
+				<div class="apitask-entry-form-box-img">
+
+
+					
+
+						
+						{% for el in google.images %}
+						<div class="img-frame">
+
+						
+													
+								<div class="img-box">
+									<img style="width: 100%; " src="{{el}}">
+									
+								</div>
+								<div class="img-text">
+									<div style="width:100%;" class="img-link" id="img-{{forloop.counter0}}">
+										Open website
+									</div>
+								</div>
+
+						</div>
+						{% endfor %}
+
+
+					
+
+
+
+					<div id="link_box" style="width: 100%;float:left; display: none;">
+						{% for el in google.links %}
+							<div id="link-{{forloop.counter0}}">{{el}}</div>
+						{% endfor %}
+					</div>
+
+
+
+				</div>
+
+			</div>	
+		</div>
+	</div>
+
+{% endblock %}
